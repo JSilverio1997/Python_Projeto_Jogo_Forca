@@ -1,6 +1,11 @@
 import desenhos as d 
+from Arquivos import ler_arquivo_palavras
+from random import choice
 
-palavra = input('Digite uma palavra secreta: ').lower().strip()
+lista_palavras = list()
+lista_palavras = ler_arquivo_palavras()
+
+palavra_sorteada = choice(lista_palavras)
 
 for enter in range(50):
     print()
@@ -10,8 +15,8 @@ acertos = []
 erros  = 0
 
 while True:
-    advinha = d.imprimir_palavra_secreta(palavra, acertos)
-    if advinha == palavra:
+    advinha = d.imprimir_palavra_secreta(palavra_sorteada, acertos)
+    if advinha == palavra_sorteada:
         print('Você acertou!')
         break
 
@@ -23,7 +28,7 @@ while True:
     
     else:
         digitadas += tentativa
-        if tentativa in palavra:
+        if tentativa in palavra_sorteada:
             acertos += tentativa
         
         else:
@@ -35,6 +40,6 @@ while True:
     #Condicao de fim de jogos
     if erros == 6:
         print('Enforcado!')
-        print(f'A palavra correta era {palavra}.')
+        print(f'A palavra correta era {palavra_sorteada}.')
         break
 
