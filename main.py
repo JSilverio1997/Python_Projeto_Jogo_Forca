@@ -1,3 +1,5 @@
+import desenhos as d 
+
 palavra = input('Digite uma palavra secreta: ').lower().strip()
 
 for enter in range(50):
@@ -8,19 +10,7 @@ acertos = []
 erros  = 0
 
 while True:
-    advinha = ""
-    for letra in palavra:
-        if letra in acertos:
-            advinha += letra
-        else:
-            advinha += '\u2588'
-    
-    print(f'Advinhe: {len(palavra)}letras: ')
-    for letra in advinha:
-        print(f'{letra} ', end=''""'')
-    
-    # Condicao de Vitoria
-    print()
+    advinha = d.imprimir_palavra_secreta(palavra, acertos)
     if advinha == palavra:
         print('Você acertou!')
         break
@@ -40,39 +30,11 @@ while True:
             erros += 1
             print('Você errou!')
 
-    #Desenhando a Forca
-    print("X==:==")
-    print("X  :  ")
-    if erros >= 1:
-        print('X  O ')
-    else:
-        print('X')
-
-    linha2 = ""
-    if erros == 2:
-        linha2 = " | "
-    
-    elif erros == 3:
-        linha2 = " /| "
-    
-    elif erros >= 4:
-        linha2 = " /|\ "
-    
-    print(f'X{linha2}')
-
-    linha3 = ""
-    if erros == 5:
-        linha3 += " / "
-    
-    elif erros >= 6:
-        linha3 += " / \ "
-    
-    print(f'X{linha3}')
-    print(f'X\n=========')
+    d.desenhar_forca(erros)
 
     #Condicao de fim de jogos
     if erros == 6:
         print('Enforcado!')
-        print(f'A palvra correta era {palavra}.')
+        print(f'A palavra correta era {palavra}.')
         break
 
