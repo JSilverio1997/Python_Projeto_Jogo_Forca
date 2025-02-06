@@ -1,45 +1,54 @@
-import desenhos as d 
-from Arquivos import ler_arquivo_palavras
-from random import choice
+from jogo import *
+import BancoDados as bd
 
-lista_palavras = list()
-lista_palavras = ler_arquivo_palavras()
+def mostra_menu():
+    print('-'*50)
+    print('| 1 - Jogar Jogo da Forca \t\t\t  |')
+    print('| 2 - Mostrar Pontuação do Jogo\t\t\t  |')
+    print('| 3 - Sair' + ' ' *40 + '|')
+    print('-'*50)
 
-palavra_sorteada = choice(lista_palavras)
+def main():
+    while True:
+        try:
 
-for enter in range(50):
-    print()
+            conexao = bd.conectar()
+            bd.criar_tabela(conexao)
 
-digitadas = []
-acertos = []
-erros  = 0
+            mostra_menu()
+            escolha = int(input('Escolha uma das opções acima para prosseguir: '))
+            
+            while escolha not in(1, 2, 3):
+                print('Por favor escolha uma opção válida.')
+                mostra_menu()
+                escolha = int(input('Escolha uma das opções acima para prosseguir: '))
+            
+            if escolha == 1:
+                jogar()
+                jogar_novamente()
+                
+            elif escolha == 2: 
+                print('SCORE')
+                dados = bd.listar_dados()
 
-while True:
-    advinha = d.imprimir_palavra_secreta(palavra_sorteada, acertos)
-    if advinha == palavra_sorteada:
-        print('Você acertou!')
-        break
+                if not dados:
+                    print('Score Vazio')
+                
+                else:
+                    i = 1
+                    for linha in dados:
+                        print(f'{i} º Nome: {linha[1]} - Score: {linha[2]}')
+                        i += 1
+                
+            elif escolha == 3:
+                print('Saindo do Menu ....')
+                break
 
-    #Tentativas
-    tentativa = input('\nDigite uma letra: ').lower().strip()
-    if tentativa in digitadas:
-        print('Você já usou essa letra!')
-        continue
+        except ValueError:
+            print('-'*50)
+            print('Por favor digite somente números.')
     
-    else:
-        digitadas += tentativa
-        if tentativa in palavra_sorteada:
-            acertos += tentativa
-        
-        else:
-            erros += 1
-            print('Você errou!')
+    bd.desconectar(conexao)
 
-    d.desenhar_forca(erros)
-
-    #Condicao de fim de jogos
-    if erros == 6:
-        print('Enforcado!')
-        print(f'A palavra correta era {palavra_sorteada}.')
-        break
+main()
 
